@@ -15,7 +15,21 @@ export default defineConfig({
   },
   plugins: [
     tailwindcss(),
-    tanstackStart(),
+    tanstackStart({
+      prerender: {
+        enabled: true,
+        crawlLinks: true,
+      },
+      pages: [
+        {
+          path: '/404',
+          prerender: {
+            enabled: true,
+            outputPath: '/404.html',
+          },
+        },
+      ],
+    }),
     // React 插件必须排在 TanStack Start 插件之后
     viteReact(),
   ],
