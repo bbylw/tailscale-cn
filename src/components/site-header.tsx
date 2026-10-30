@@ -36,7 +36,6 @@ export function SiteHeader() {
         <Link to="/" className="brand" aria-label="Tailscale 中文站首页">
           <Wordmark />
           <span className="brand__name">Tailscale</span>
-          <span className="brand__tag">中文</span>
         </Link>
 
         <nav className="nav" aria-label="主导航">
