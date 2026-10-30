@@ -1,0 +1,9 @@
+node_modules/
+dist/
+.output/
+.portless.log
+.shots/
+*.local
+.DS_Store
+.tanstack/
+.workbuddy/
