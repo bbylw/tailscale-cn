@@ -47,7 +47,7 @@ export const docs: Doc[] = [
       },
       {
         kind: 'p',
-        text: 'Tailscale 默认建的是**点对点网状网络**。每台设备都尝试直接连接其他设备，流量不必绕路。协调服务器只负责告诉设备“谁在哪儿、公钥是什么”，不进入数据路径。需要传统 VPN 那种“全部流量走一个出口”的行为时，再把某台设备设为[退出节点](/docs/exit-nodes)即可。',
+        text: 'Tailscale 默认建的是**点对点网状网络**。每台设备都尝试直接连接其他设备，流量不必绕路。协调服务器只负责告诉设备「谁在哪儿、公钥是什么」，不进入数据路径。需要传统 VPN 那种「全部流量走一个出口」的行为时，再把某台设备设为[退出节点](/docs/exit-nodes)即可。',
       },
       {
         kind: 'table',
@@ -96,7 +96,7 @@ export const docs: Doc[] = [
         kind: 'note',
         tone: 'info',
         title: '先建立直觉',
-        text: '把它想成“给每台设备发一张带身份的内网 IP 卡”：卡是 WireGuard 密钥，发卡的是协调服务器，刷卡之后的流量只在你和对方之间流动。',
+        text: '把它想成「给每台设备发一张带身份的内网 IP 卡」：卡是 WireGuard 密钥，发卡的是协调服务器，刷卡之后的流量只在你和对方之间流动。',
       },
     ],
   },
@@ -110,7 +110,7 @@ export const docs: Doc[] = [
     blocks: [
       {
         kind: 'p',
-        text: '理解 Tailscale 只需要抓住一条分界线：**控制平面**负责“认识彼此”，**数据平面**负责“搬运数据”。两者是分开的，这也是它和传统 VPN 最根本的差异。',
+        text: '理解 Tailscale 只需要抓住一条分界线：**控制平面**负责「认识彼此」，**数据平面**负责「搬运数据」。两者是分开的，这也是它和传统 VPN 最根本的差异。',
       },
       { kind: 'h2', id: 'control-plane', text: '控制平面：协调服务器' },
       {
@@ -137,7 +137,7 @@ export const docs: Doc[] = [
       },
       {
         kind: 'p',
-        text: '只要有一边的 NAT 允许这种“由内向外建立、双向使用”的映射，直连就成立。常见的家用路由器、云安全组大多可以。直连成功后，流量走最短路径，延迟接近物理网络的下限。',
+        text: '只要有一边的 NAT 允许这种「由内向外建立、双向使用」的映射，直连就成立。常见的家用路由器、云安全组大多可以。直连成功后，流量走最短路径，延迟接近物理网络的下限。',
       },
       { kind: 'h2', id: 'derp', text: 'DERP：直连失败时的兜底' },
       {
@@ -158,7 +158,7 @@ pong from nas (100.101.102.103) via 192.168.1.20:41641 in 3ms
       { kind: 'h2', id: 'keys', text: '身份、密钥与过期' },
       {
         kind: 'p',
-        text: '设备身份由节点密钥决定，用户身份由身份提供商决定。管理控制台可以为设备设置**密钥过期时间**，到期后需要重新认证；也可以为服务器、容器这类长期在线的设备关闭过期。这一点对子网路由器和退出节点尤其重要——密钥过期后它们通告的路由会保留但不可达，这是有意的“fail close”设计，避免流量泄漏到不可信网络。',
+        text: '设备身份由节点密钥决定，用户身份由身份提供商决定。管理控制台可以为设备设置**密钥过期时间**，到期后需要重新认证；也可以为服务器、容器这类长期在线的设备关闭过期。这一点对子网路由器和退出节点尤其重要——密钥过期后它们通告的路由会保留但不可达，这是有意的「fail close」设计，避免流量泄漏到不可信网络。',
       },
       {
         kind: 'note',
@@ -251,7 +251,7 @@ ssh <用户名>@<另一台设备的名字>`,
     blocks: [
       {
         kind: 'p',
-        text: '有些设备装不了 Tailscale：网络打印机、摄像头、老旧的工业控制器，或者一整个你不想逐台改造的 VPC 网段。**子网路由器**就是这些设备的网关——它自己跑 Tailscale，把背后的网段“通告”给整个 tailnet。',
+        text: '有些设备装不了 Tailscale：网络打印机、摄像头、老旧的工业控制器，或者一整个你不想逐台改造的 VPC 网段。**子网路由器**就是这些设备的网关——它自己跑 Tailscale，把背后的网段「通告」给整个 tailnet。',
       },
       { kind: 'h2', id: 'when', text: '什么时候该用' },
       {
@@ -267,7 +267,7 @@ ssh <用户名>@<另一台设备的名字>`,
         kind: 'note',
         tone: 'info',
         title: '和退出节点的区别',
-        text: '子网路由器接通的是**私有网段**；退出节点改写的是**公网出口**（`0.0.0.0/0`、`::/0`）。需要“所有上网流量都从某地出去”时，用退出节点。',
+        text: '子网路由器接通的是**私有网段**；退出节点改写的是**公网出口**（`0.0.0.0/0`、`::/0`）。需要「所有上网流量都从某地出去」时，用退出节点。',
       },
       { kind: 'h2', id: 'setup', text: '配置步骤' },
       {
@@ -289,7 +289,7 @@ sudo sysctl -p /etc/sysctl.d/99-tailscale.conf`,
           },
           {
             title: '通告路由',
-            text: '多个网段用逗号分隔。通告只是“声明”，还需要批准才会生效。',
+            text: '多个网段用逗号分隔。通告只是「声明」，还需要批准才会生效。',
             code: {
               label: '通告 192.168.1.0/24',
               code: `sudo tailscale set --advertise-routes=192.168.1.0/24`,
@@ -297,7 +297,7 @@ sudo sysctl -p /etc/sysctl.d/99-tailscale.conf`,
           },
           {
             title: '在管理控制台批准',
-            text: '打开 Machines 页面，找到带 Subnets 标记的设备，进入 Subnets 部分勾选路由并保存。配置了 autoApprovers 的话可以跳过这一步。',
+            text: '打开 **Machines** 页面，找到带 `Subnets` 标记的设备，进入 **Subnets** 部分勾选路由并保存。配置了 `autoApprovers` 的话可以跳过这一步。',
           },
           {
             title: '让客户端接收路由',
@@ -373,7 +373,7 @@ sudo sysctl -p /etc/sysctl.d/99-tailscale.conf`,
           },
           {
             title: '在管理控制台批准',
-            text: 'Machines 页面找到带 Exit Node 标记的设备，打开路由设置并勾选 Use as exit node。只有 Owner、Admin 或 Network admin 能批准。',
+            text: '**Machines** 页面找到带 `Exit Node` 标记的设备，打开路由设置并勾选 **Use as exit node**。只有 Owner、Admin 或 Network admin 能批准。',
           },
           {
             title: '在客户端选择出口',
@@ -508,7 +508,7 @@ ping monitoring.yak-bebop.ts.net`,
     blocks: [
       {
         kind: 'p',
-        text: 'Tailscale 的权限模型是“默认拒绝”：网络里的连接只有在策略文件中被明确允许时才成立。策略文件是 tailnet 的唯一权限来源，写在管理控制台的 **Access controls** 页面里。',
+        text: 'Tailscale 的权限模型是「默认拒绝」：网络里的连接只有在策略文件中被明确允许时才成立。策略文件是 tailnet 的唯一权限来源，写在管理控制台的 **Access controls** 页面里。',
       },
       {
         kind: 'note',
@@ -521,7 +521,7 @@ ping monitoring.yak-bebop.ts.net`,
         kind: 'p',
         text: '写规则有两种语法：**Grants** 是推荐方式，统一描述网络层与应用层能力；**ACL** 是早期语法，仍然长期支持。新策略直接用 Grants。',
       },
-      { kind: 'h2', id: 'selectors', text: '用什么描述“谁”和“谁”' },
+      { kind: 'h2', id: 'selectors', text: '用什么描述「谁」和「谁」' },
       {
         kind: 'table',
         head: ['选择器', '例子', '说明'],
@@ -651,7 +651,7 @@ tailscale serve status`,
         kind: 'note',
         tone: 'warn',
         title: 'funnel 是对公网开放',
-        text: '执行 `tailscale funnel` 前先确认策略与内容都没问题。它绕过了“只有 tailnet 内可访问”的保护，暴露面等于公网。',
+        text: '执行 `tailscale funnel` 前先确认策略与内容都没问题。它绕过了「只有 tailnet 内可访问」的保护，暴露面等于公网。',
       },
       { kind: 'h2', id: 'debug', text: '排障' },
       {
@@ -689,7 +689,7 @@ tailscale bugreport         # 生成诊断包，提交问题时附上`,
       { kind: 'h2', id: 'vs-vpn', text: '它和传统 VPN 是什么关系？' },
       {
         kind: 'p',
-        text: '默认是点对点网状网络，不是中心网关。需要传统 VPN 的“全部流量走一个出口”时，把某台设备设为[退出节点](/docs/exit-nodes)，行为就一样了。',
+        text: '默认是点对点网状网络，不是中心网关。需要传统 VPN 的「全部流量走一个出口」时，把某台设备设为[退出节点](/docs/exit-nodes)，行为就一样了。',
       },
       { kind: 'h2', id: 'open-source', text: '哪些部分是开源的？' },
       {
@@ -704,7 +704,7 @@ tailscale bugreport         # 生成诊断包，提交问题时附上`,
       { kind: 'h2', id: 'free', text: '个人用要花钱吗？' },
       {
         kind: 'p',
-        text: '有面向个人的免费方案，设备数与功能额度以官网定价页为准。团队规模、SSO、日志等能力属于付费范围。本站不复制价格，避免过期信息。',
+        text: '有面向个人的免费方案，设备数与功能额度以官网定价页为准。团队规模、SSO、审计日志等能力属于付费范围。',
       },
       { kind: 'h2', id: 'self-host', text: '能自己搭协调服务器吗？' },
       {
@@ -721,10 +721,10 @@ tailscale bugreport         # 生成诊断包，提交问题时附上`,
         kind: 'p',
         text: '支持。Tailscale 会给设备分配 IPv4 与 IPv6 地址，子网路由也可以通告 IPv6 网段。例外是 Apple TV 作为子网路由器时只支持 IPv4。',
       },
-      { kind: 'h2', id: 'about-site', text: '这个站点是官方的吗？' },
+      { kind: 'h2', id: 'check-direct', text: '怎么确认两台设备是直连还是走了中继？' },
       {
         kind: 'p',
-        text: '不是。本站是中文导读站点，内容依据开源仓库的 README 与 tailscale.com/docs 整理，用中文重新组织表述，不是官方文档的逐字翻译。涉及计费、合规与最新行为时，请以官方英文文档为准。',
+        text: '运行 `tailscale status` 或 `tailscale ping <设备名>`。输出里出现 `direct` 与对端的局域网或公网 `IP:端口`，说明已经建立点对点直连；出现 `relay "xxx"` 或 `via DERP(xxx)`，则说明当前通过 DERP 中继转发密文。',
       },
     ],
   },
@@ -759,10 +759,17 @@ export const searchIndex = docs.map((doc) => ({
   title: doc.title,
   description: doc.description,
   group: doc.group,
+  headings: getHeadings(doc),
   keywords: `${doc.title} ${doc.description} ${doc.blocks
     .map((block) => {
       if (block.kind === 'p' || block.kind === 'h2' || block.kind === 'h3') return block.text
       if (block.kind === 'list') return block.items.join(' ')
+      if (block.kind === 'note') return `${block.title} ${block.text}`
+      if (block.kind === 'code') return `${block.label ?? ''} ${block.code}`
+      if (block.kind === 'table') return `${block.head.join(' ')} ${block.rows.map((r) => r.join(' ')).join(' ')}`
+      if (block.kind === 'steps') {
+        return block.items.map((item) => `${item.title} ${item.text} ${item.code?.code ?? ''}`).join(' ')
+      }
       return ''
     })
     .join(' ')}`,

@@ -1,4 +1,3 @@
-import type { ReactNode } from 'react'
 import { Outlet, createRootRoute, HeadContent, Link, Scripts } from '@tanstack/react-router'
 import '@fontsource-variable/archivo'
 import '@fontsource-variable/jetbrains-mono'
@@ -13,12 +12,12 @@ export const Route = createRootRoute({
       { name: 'viewport', content: 'width=device-width, initial-scale=1' },
       { name: 'theme-color', content: '#eceee7' },
       {
-        title: 'Tailscale 中文文档 · 让私有 WireGuard 网络变得简单',
+        title: 'Tailscale · 让私有 WireGuard 网络变得简单',
       },
       {
         name: 'description',
         content:
-          'Tailscale 中文导读：用 WireGuard 把笔记本、手机、服务器连成点对点私有网络，不需要公网 IP，也不需要端口转发。包含安装、子网路由、退出节点、MagicDNS 与访问控制。',
+          '用 WireGuard 把笔记本、手机、服务器连成点对点私有网络，不需要公网 IP，也不需要端口转发。包含安装、子网路由、退出节点、MagicDNS 与访问控制。',
       },
     ],
     links: [

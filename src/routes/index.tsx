@@ -7,11 +7,11 @@ export const Route = createFileRoute('/')({
   component: Landing,
   head: () => ({
     meta: [
-      { title: 'Tailscale 中文 · 不需要公网 IP，也能连成一张网' },
+      { title: 'Tailscale · 不需要公网 IP，也能连成一张网' },
       {
         name: 'description',
         content:
-          'Tailscale 用 WireGuard 把设备接进同一张私有网络：点对点直连、无需公网 IP、无需端口转发。中文导读，含安装、子网路由器、退出节点与访问控制。',
+          'Tailscale 用 WireGuard 把设备接进同一张私有网络：点对点直连、无需公网 IP、无需端口转发。含安装、子网路由器、退出节点与访问控制。',
       },
     ],
   }),
@@ -220,7 +220,12 @@ function Landing() {
 
           <div className="features">
             {FEATURES.map((feature) => (
-              <div className="feature" key={feature.name}>
+              <Link
+                key={feature.name}
+                to="/docs/$slug"
+                params={{ slug: feature.slug }}
+                className="feature"
+              >
                 <div>
                   <div className="feature__name">{feature.name}</div>
                   <div className="feature__cmd" style={{ marginTop: 4 }}>
@@ -228,14 +233,8 @@ function Landing() {
                   </div>
                 </div>
                 <p className="feature__desc">{feature.desc}</p>
-                <Link
-                  to="/docs/$slug"
-                  params={{ slug: feature.slug }}
-                  className="feature__link"
-                >
-                  阅读
-                </Link>
-              </div>
+                <span className="feature__link">阅读</span>
+              </Link>
             ))}
           </div>
         </div>

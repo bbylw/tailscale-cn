@@ -23,17 +23,33 @@ export function Wordmark() {
 }
 
 export function SiteHeader() {
-  const pathname = useRouterState({ select: (state) => state.location.pathname })
+  const { pathname, hash } = useRouterState({
+    select: (state) => ({
+      pathname: state.location.pathname,
+      hash: state.location.hash.replace(/^#/, ''),
+    }),
+  })
   const [menuOpen, setMenuOpen] = useState(false)
 
   useEffect(() => {
     setMenuOpen(false)
-  }, [pathname])
+  }, [pathname, hash])
+
+  const isItemActive = (item: NavItem) => {
+    if (item.to === '/docs') {
+      return pathname.startsWith('/docs')
+    }
+    if (pathname !== '/') return false
+    if (item.hash) {
+      return hash === item.hash
+    }
+    return !hash || (hash !== 'how' && hash !== 'open-source')
+  }
 
   return (
     <header className="site-header">
       <div className="shell site-header__inner">
-        <Link to="/" className="brand" aria-label="Tailscale 中文站首页">
+        <Link to="/" className="brand" aria-label="Tailscale 首页">
           <Wordmark />
           <span className="brand__name">Tailscale</span>
         </Link>
@@ -44,15 +60,8 @@ export function SiteHeader() {
               key={item.label}
               to={item.to}
               hash={item.hash}
-              data-status={
-                item.to === '/docs'
-                  ? pathname.startsWith('/docs')
-                    ? 'active'
-                    : undefined
-                  : pathname === '/' && !item.hash
-                    ? 'active'
-                    : undefined
-              }
+              activeOptions={{ exact: true, includeHash: true }}
+              data-active={isItemActive(item) ? 'true' : undefined}
             >
               {item.label}
             </Link>
@@ -89,11 +98,22 @@ export function SiteHeader() {
       {menuOpen && (
         <div className="mobile-menu">
           {LINKS.map((item) => (
-            <Link key={item.label} to={item.to} hash={item.hash}>
+            <Link
+              key={item.label}
+              to={item.to}
+              hash={item.hash}
+              activeOptions={{ exact: true, includeHash: true }}
+              data-active={isItemActive(item) ? 'true' : undefined}
+              onClick={() => setMenuOpen(false)}
+            >
               {item.label}
             </Link>
           ))}
-          <Link to="/docs/$slug" params={{ slug: 'install' }}>
+          <Link
+            to="/docs/$slug"
+            params={{ slug: 'install' }}
+            onClick={() => setMenuOpen(false)}
+          >
             开始使用
           </Link>
         </div>

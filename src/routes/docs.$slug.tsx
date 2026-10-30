@@ -13,7 +13,7 @@ export const Route = createFileRoute('/docs/$slug')({
   component: DocPage,
   head: ({ loaderData }) => ({
     meta: [
-      { title: `${loaderData?.doc.title ?? '文档'} · Tailscale 中文` },
+      { title: `${loaderData?.doc.title ?? '文档'} · Tailscale` },
       { name: 'description', content: loaderData?.doc.description ?? '' },
     ],
   }),
@@ -38,8 +38,8 @@ function DocPage() {
         <h1 className="doc__title">{doc.title}</h1>
         <p className="doc__desc">{doc.description}</p>
         <div className="doc__meta">
-          <span>约 {doc.minutes} 分钟</span>
-          <span>整理自官方文档</span>
+          <span>约 {doc.minutes} 分钟阅读</span>
+          <span>{headings.length} 个小节</span>
         </div>
 
         <div className="prose-doc" data-compact={doc.slug === 'faq' ? 'true' : undefined}>

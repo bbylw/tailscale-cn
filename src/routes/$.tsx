@@ -2,7 +2,7 @@ import { Link, createFileRoute } from '@tanstack/react-router'
 
 export const Route = createFileRoute('/$')({
   head: () => ({
-    meta: [{ title: '页面未找到 · Tailscale 中文' }],
+    meta: [{ title: '页面未找到 · Tailscale' }],
   }),
   component: NotFoundPage,
 })

@@ -10,13 +10,17 @@ export function DocBlocks({ blocks }: { blocks: Block[] }) {
           case 'h2':
             return (
               <h2 key={index} id={block.id}>
-                {block.text}
+                <a className="heading-link" href={`#${block.id}`}>
+                  {block.text}
+                </a>
               </h2>
             )
           case 'h3':
             return (
               <h3 key={index} id={block.id}>
-                {block.text}
+                <a className="heading-link" href={`#${block.id}`}>
+                  {block.text}
+                </a>
               </h3>
             )
           case 'p':
@@ -59,26 +63,28 @@ export function DocBlocks({ blocks }: { blocks: Block[] }) {
             )
           case 'table':
             return (
-              <table key={index}>
-                <thead>
-                  <tr>
-                    {block.head.map((cell) => (
-                      <th key={cell}>{cell}</th>
-                    ))}
-                  </tr>
-                </thead>
-                <tbody>
-                  {block.rows.map((row, rowIndex) => (
-                    <tr key={rowIndex}>
-                      {row.map((cell, cellIndex) => (
-                        <td key={cellIndex}>
-                          <RichText text={cell} />
-                        </td>
+              <div className="table-wrap" key={index}>
+                <table>
+                  <thead>
+                    <tr>
+                      {block.head.map((cell) => (
+                        <th key={cell}>{cell}</th>
                       ))}
                     </tr>
-                  ))}
-                </tbody>
-              </table>
+                  </thead>
+                  <tbody>
+                    {block.rows.map((row, rowIndex) => (
+                      <tr key={rowIndex}>
+                        {row.map((cell, cellIndex) => (
+                          <td key={cellIndex}>
+                            <RichText text={cell} />
+                          </td>
+                        ))}
+                      </tr>
+                    ))}
+                  </tbody>
+                </table>
+              </div>
             )
           case 'steps':
             return (
@@ -87,9 +93,13 @@ export function DocBlocks({ blocks }: { blocks: Block[] }) {
                   <li className="steps__item" key={itemIndex}>
                     <p className="steps__title">
                       <span className="steps__num">{String(itemIndex + 1).padStart(2, '0')}</span>
-                      {item.title}
+                      <span>
+                        <RichText text={item.title} />
+                      </span>
                     </p>
-                    <p className="steps__text">{item.text}</p>
+                    <p className="steps__text">
+                      <RichText text={item.text} />
+                    </p>
                     {item.code && <CodeBlock code={item.code.code} label={item.code.label} />}
                   </li>
                 ))}

@@ -5,11 +5,11 @@ export const Route = createFileRoute('/docs/')({
   component: DocsIndex,
   head: () => ({
     meta: [
-      { title: '文档索引 · Tailscale 中文' },
+      { title: '文档 · Tailscale' },
       {
         name: 'description',
         content:
-          'Tailscale 中文文档索引：从安装与首次连接，到子网路由器、退出节点、MagicDNS、访问控制与命令行参考。',
+          'Tailscale 文档索引：从安装与首次连接，到子网路由器、退出节点、MagicDNS、访问控制与命令行参考。',
       },
     ],
   }),
@@ -25,7 +25,7 @@ function DocsIndex() {
             <h1 className="docs-hero__title">从两台设备开始，逐步接管整个网络</h1>
             <p className="docs-hero__lede">
               入门部分只需要五分钟；后面的章节按能力拆分，遇到具体问题时再查。
-              这里的内容依据仓库 README 与官方文档整理，用中文重新组织，不是逐字翻译。
+              覆盖从首次建网、NAT 穿透原理，到子网路由、退出节点、MagicDNS 与访问控制策略的完整配置流程。
             </p>
           </div>
 

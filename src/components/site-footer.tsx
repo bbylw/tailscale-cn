@@ -12,7 +12,7 @@ export function SiteFooter() {
               <span className="brand__name">Tailscale</span>
             </Link>
             <p className="site-footer__desc">
-              依据开源仓库 README 与官方文档整理的中文导读站点。内容经过重新组织与表述，不是官方逐字翻译。
+              基于 WireGuard 的点对点私有网络。把笔记本、手机、服务器与容器接进同一张 tailnet，无需公网 IP，也无需改动防火墙。
             </p>
           </div>
 
@@ -53,7 +53,8 @@ export function SiteFooter() {
         </div>
 
         <div className="site-footer__btm">
-          <span style={{ marginLeft: 'auto' }}>WireGuard 是 Jason A. Donenfeld 的注册商标</span>
+          <span>BSD 3-Clause 开源守护进程 · tailscale/tailscale</span>
+          <span>WireGuard 是 Jason A. Donenfeld 的注册商标</span>
         </div>
       </div>
     </footer>

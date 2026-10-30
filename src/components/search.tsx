@@ -2,33 +2,62 @@ import { useEffect, useMemo, useRef, useState } from 'react'
 import { useNavigate } from '@tanstack/react-router'
 import { searchIndex } from '@/content/docs'
 
+type SearchResult = {
+  slug: string
+  title: string
+  description: string
+  group: string
+  matchedHeading?: { id: string; text: string }
+}
+
 export function Search() {
   const [open, setOpen] = useState(false)
   const [query, setQuery] = useState('')
   const [cursor, setCursor] = useState(0)
   const inputRef = useRef<HTMLInputElement>(null)
+  const listRef = useRef<HTMLDivElement>(null)
   const navigate = useNavigate()
 
-  const results = useMemo(() => {
+  const results = useMemo<SearchResult[]>(() => {
     const value = query.trim().toLowerCase()
-    if (!value) return searchIndex.slice(0, 6)
-
-    const score = (item: (typeof searchIndex)[number]) => {
-      const title = item.title.toLowerCase()
-      if (title === value) return 100
-      if (title.startsWith(value)) return 80
-      if (title.includes(value)) return 60
-      if (item.description.toLowerCase().includes(value)) return 40
-      if (item.keywords.toLowerCase().includes(value)) return 20
-      return 0
+    if (!value) {
+      return searchIndex.slice(0, 6).map((item) => ({
+        slug: item.slug,
+        title: item.title,
+        description: item.description,
+        group: item.group,
+      }))
     }
 
     return searchIndex
-      .map((item) => ({ item, value: score(item) }))
-      .filter((entry) => entry.value > 0)
-      .sort((a, b) => b.value - a.value)
+      .map((item) => {
+        const title = item.title.toLowerCase()
+        let score = 0
+        if (title === value) score = 100
+        else if (title.startsWith(value)) score = 85
+        else if (title.includes(value)) score = 70
+
+        const matchedHeading = item.headings.find((h) => h.text.toLowerCase().includes(value))
+        if (matchedHeading && score < 65) score = 60
+
+        if (score === 0 && item.description.toLowerCase().includes(value)) score = 45
+        if (score === 0 && item.keywords.toLowerCase().includes(value)) score = 25
+
+        return {
+          score,
+          result: {
+            slug: item.slug,
+            title: item.title,
+            description: item.description,
+            group: item.group,
+            matchedHeading,
+          },
+        }
+      })
+      .filter((entry) => entry.score > 0)
+      .sort((a, b) => b.score - a.score)
       .slice(0, 8)
-      .map((entry) => entry.item)
+      .map((entry) => entry.result)
   }, [query])
 
   useEffect(() => {
@@ -39,7 +68,7 @@ export function Search() {
         target?.tagName === 'TEXTAREA' ||
         target?.isContentEditable === true
 
-      if ((event.key === 'k' && (event.metaKey || event.ctrlKey)) || (event.key === '/' && !typing)) {
+      if ((event.key.toLowerCase() === 'k' && (event.metaKey || event.ctrlKey)) || (event.key === '/' && !typing)) {
         event.preventDefault()
         setOpen(true)
       }
@@ -66,10 +95,20 @@ export function Search() {
     }
   }, [open])
 
-  const go = (slug: string | undefined) => {
-    if (!slug) return
+  useEffect(() => {
+    if (!open || !listRef.current) return
+    const activeEl = listRef.current.querySelector<HTMLElement>('[data-active="true"]')
+    activeEl?.scrollIntoView({ block: 'nearest' })
+  }, [cursor, open])
+
+  const go = (item: SearchResult | undefined) => {
+    if (!item) return
     setOpen(false)
-    navigate({ to: '/docs/$slug', params: { slug } })
+    navigate({
+      to: '/docs/$slug',
+      params: { slug: item.slug },
+      hash: item.matchedHeading?.id,
+    })
   }
 
   return (
@@ -95,7 +134,7 @@ export function Search() {
             <input
               ref={inputRef}
               className="search-input"
-              placeholder="搜索文档，例如 子网、DERP、ACL"
+              placeholder="搜索文档、命令或概念，例如 子网、DERP、ACL、netcheck"
               value={query}
               onChange={(event) => {
                 setQuery(event.target.value)
@@ -104,7 +143,7 @@ export function Search() {
               onKeyDown={(event) => {
                 if (event.key === 'ArrowDown') {
                   event.preventDefault()
-                  setCursor((value) => Math.min(value + 1, results.length - 1))
+                  setCursor((value) => Math.min(value + 1, Math.max(0, results.length - 1)))
                 }
                 if (event.key === 'ArrowUp') {
                   event.preventDefault()
@@ -112,14 +151,14 @@ export function Search() {
                 }
                 if (event.key === 'Enter') {
                   event.preventDefault()
-                  go(results[cursor]?.slug)
+                  go(results[cursor])
                 }
               }}
               aria-label="搜索关键词"
             />
-            <div className="search-results">
+            <div className="search-results" ref={listRef}>
               {results.length === 0 ? (
-                <p className="search-empty">没有匹配的页面。试试「子网」「退出节点」或「MagicDNS」。</p>
+                <p className="search-empty">没有匹配的页面。试试「子网」「退出节点」「MagicDNS」或「ACL」。</p>
               ) : (
                 results.map((item, index) => (
                   <button
@@ -128,10 +167,18 @@ export function Search() {
                     className="search-result"
                     data-active={index === cursor}
                     onMouseEnter={() => setCursor(index)}
-                    onClick={() => go(item.slug)}
+                    onClick={() => go(item)}
                     style={{ display: 'block', width: '100%', textAlign: 'left' }}
                   >
-                    <div className="search-result__title">{item.title}</div>
+                    <div className="search-result__head">
+                      <span className="search-result__title">
+                        {item.title}
+                        {item.matchedHeading ? (
+                          <span className="search-result__section"> · {item.matchedHeading.text}</span>
+                        ) : null}
+                      </span>
+                      <span className="search-result__group">{item.group}</span>
+                    </div>
                     <div className="search-result__desc">{item.description}</div>
                   </button>
                 ))
